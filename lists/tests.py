@@ -32,6 +32,7 @@ class NewListTest(TestCase):
             '/lists/new',
             data={'item_text': 'A new list item'}
         )
+
         ## equals to the post request above
         # request = HttpRequest()
         # request.method = 'POST'
@@ -55,6 +56,7 @@ class NewListTest(TestCase):
             '/lists/new',
             data = {'item_text': 'A new list item'}
         )
+        new_list = List.objects.first()
 
         # status code is 200: OK
         # status code 404: error
@@ -62,7 +64,7 @@ class NewListTest(TestCase):
     #     self.assertEqual(response.status_code, 302)
     #     self.assertEqual(response['location'], '/lists/the-only-list/')
 
-        self.assertRedirects(response, '/lists/the-only-list/')
+        self.assertRedirects(response, '/lists/%d/' % (new_list.id))
     # def test_home_page_displays_all_items(self):
     #     Item.objects.create(text='itemey 1')
     #     Item.objects.create(text='itemey 2')
@@ -104,15 +106,21 @@ class ItemAndLlistModelTest(TestCase):
 
 class ListViewTest(TestCase):
     def test_uses_list_template(self):
-        response = self.client.get('/lists/the-only-list/')
+        new_list = List.objects.create()
+        response = self.client.get('/lists/%d/' % (new_list.id))
         self.assertTemplateUsed(response, 'list.html')
 
-    def test_displays_all_items(self):
+    def test_displays_only_items_for_list(self):
         new_list = List.objects.create()
         Item.objects.create(text='itemey 1', list = new_list)
         Item.objects.create(text='itemey 2', list = new_list)
+        other_list = List.objects.create()
+        Item.objects.create(text='other item 1', list = other_list)
+        Item.objects.create(text='other item 2', list = other_list)
 
-        response = self.client.get('/lists/the-only-list/')
+        response = self.client.get('/lists/%d/' % (new_list.id))
 
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+        self.assertNotContains(response, 'other item 1')
+        self.assertNotContains(response, 'other item 2')
