@@ -14,11 +14,11 @@ def view_list(request, list_id):
     # to-do list
     list_ = List.objects.get(id = list_id)
     # A list of all items in the to-do list
-    items = Item.objects.filter(list = list_)
+    # items = Item.objects.filter(list = list_)
     return render(
         request,
         'list.html',
-        {'items': items, 'list': list_}
+        {'list': list_}
     )
 
 def add_item(request, list_id):
