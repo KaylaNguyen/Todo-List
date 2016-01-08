@@ -99,5 +99,21 @@ class NewVisitorTest(LiveServerTestCase):
 
     # def test_can_log_in_to_a_new_account(self):
 
+    def test_layout_and_styling(self):
+        # Edith goes to the homepage
+        self.browser.set_window_size(1024, 768)
+        self.browser.get(self.live_server_url)
+
+        # She starts a new list and sees the box is centered
+        self.check_imput_box_is_centered()
+
+    def check_imput_box_is_centered(self):
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + (inputbox.size['width'] / 2),
+            512,
+            delta = 5
+        )
+
 if __name__ == '__main__':
     unittest.main()
