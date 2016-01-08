@@ -5,7 +5,7 @@
   <body>
       <h1>Your To-Do list</h1>
       <!-- Send data back to the server, the URL we have -->
-      <form method = "POST" action = "/lists/new">
+      <form method = "POST" action = "/lists/{{ list.id }}/add_item">
         <input id = "id_new_item" name = "item_text" placeholder="Enter a to-do item"/>
         <!-- To add the CSRF token we use a template tag -->
         {% csrf_token %}
