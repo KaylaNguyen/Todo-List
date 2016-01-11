@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>To-Do lists</title>
+  </head>
+  <body>
+    <!-- Inheritence, abstract template: a block to be override, write on -->
+      <h1>{% block header_text %}{% endblock %}</h1>
+      <!-- Send data back to the server, the URL we have -->
+      <form method = "POST" action = '{% block form_action %}{% endblock %}'>
+        <p style = "text-align: center;">
+          <input id = "id_new_item" name = "item_text" placeholder="Enter a to-do item"/>
+        </p>
+        <!-- To add the CSRF token we use a template tag -->
+        {% csrf_token %}
+      </form>
+      {% block table %}
+      {% endblock %}
+  </body>
+</html>
