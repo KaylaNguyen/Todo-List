@@ -1,10 +1,11 @@
 # selenium can load websites, click on buttons, load URLs
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import LiveServerTestCase
+# from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 # start up a new server and a new database system everytime
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -105,9 +106,9 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
 
         # She starts a new list and sees the box is centered
-        self.check_imput_box_is_centered()
+        self.check_input_box_is_centered()
 
-    def check_imput_box_is_centered(self):
+    def check_input_box_is_centered(self):
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(
             inputbox.location['x'] + (inputbox.size['width'] / 2),
