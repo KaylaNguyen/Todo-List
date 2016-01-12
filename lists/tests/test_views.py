@@ -61,8 +61,8 @@ class NewListTest(TestCase):
         # status code is 200: OK
         # status code 404: error
         # status code 302: it's somewhere else (go somewhere else to get that data)
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(response['location'], '/lists/the-only-list/')
+        #     self.assertEqual(response.status_code, 302)
+        #     self.assertEqual(response['location'], '/lists/the-only-list/')
 
         self.assertRedirects(response, '/lists/%d/' % (new_list.id))
 
@@ -92,34 +92,6 @@ class NewItemTest(TestCase):
         correct_list = List.objects.create()
         response = self.client.get('/lists/%d/' % (correct_list.id))
         self.assertEqual(response.context['list'], correct_list)
-
-class ItemAndLlistModelTest(TestCase):
-    def test_saving_and_retrieving_items(self):
-        new_list = List()
-        new_list.save()
-
-        first_item = Item()
-        first_item.text = 'The first (ever) list item'
-        first_item.list = new_list
-        first_item.save()
-
-        second_item = Item()
-        second_item.text = 'Item the second'
-        second_item.list = new_list   # equals to adding item to the new_list
-        second_item.save()
-
-        saved_list = List.objects.first()
-        self.assertEqual(new_list, saved_list)
-
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(), 2)
-
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text, 'The first (ever) list item')
-        self.assertEqual(second_saved_item.text, 'Item the second')
-        self.assertEqual(first_saved_item.list, new_list)
-        self.assertEqual(second_saved_item.list, new_list)
 
 class ListViewTest(TestCase):
     def test_uses_list_template(self):
