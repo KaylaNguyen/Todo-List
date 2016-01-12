@@ -22,19 +22,25 @@ def new_list(request):
 def view_list(request, list_id):
     # to-do list
     list_ = List.objects.get(id = list_id)
+    error = None
     # A list of all items in the to-do list
     # items = Item.objects.filter(list = list_)
 
     # Method == 'POST'
     if request.method == 'POST':
-        Item.objects.create(text=request.POST['item_text'], list=list_)
-        return redirect('/lists/%d/' % (list_.id))
+        try:
+            item = Item(text=request.POST['item_text'], list=list_)
+            item.full_clean()
+            item.save()
+
+        except ValidationError:
+            error = "You can't have an empty list item"
 
     # Method == 'GET'
     return render(
         request,
         'list.html',
-        {'list': list_}
+        {'list': list_, 'error': error}
     )
 
 def add_item(request, list_id):
