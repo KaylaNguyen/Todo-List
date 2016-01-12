@@ -24,6 +24,13 @@ def view_list(request, list_id):
     list_ = List.objects.get(id = list_id)
     # A list of all items in the to-do list
     # items = Item.objects.filter(list = list_)
+
+    # Method == 'POST'
+    if request.method == 'POST':
+        Item.objects.create(text=request.POST['item_text'], list=list_)
+        return redirect('/lists/%d/' % (list_.id))
+
+    # Method == 'GET'
     return render(
         request,
         'list.html',
