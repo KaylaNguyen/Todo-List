@@ -146,3 +146,15 @@ class ListViewTest(TestCase):
             data={'item_text': ''}
         )
         self.assertEqual(Item.objects.count(), 0)
+
+    def test_list_view_displays_checkbox(self):
+        current_list = List.objects.create()
+        Item.objects.create(text="Item 1", list=current_list)
+        Item.objects.create(text="Item 2", list=current_list)
+
+        response = self.client.get('/lists/%d/' % (current_list.id))
+
+        self.assertContains(response, 'input type = "checkbox"')
+
+    def test_POST_items_toggles_done(self):
+        pass

@@ -14,10 +14,19 @@ class TodoFunctionalTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def check_for_row_in_list_table(self, row_text):
+    def find_table_row(self, item_text):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(row_text, [row.text for row in rows])
+        for row in rows:
+            row_text = row.find_elements_by_tag_name('td')[2].text
+            if item_text == row_text:
+                return row
+        return None
+
+
+    def check_for_row_in_list_table(self, row_text):
+        row = self.find_table_row(row_text)
+        self.assertIsNotNone(row)
 
     def enter_a_new_item(self, todo_text):
         inputbox = self.browser.find_element_by_id('id_new_item')

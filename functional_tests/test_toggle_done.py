@@ -3,7 +3,9 @@ from selenium import webdriver
 
 class ToggleDoneTest(TodoFunctionalTest):
     def toggle_todo_done(self, todo_text):
-        pass
+        row = self.find_table_row(todo_text)
+        row.find_elements_by_tag_name('input').click()
+        self.browser.find_element_by_id('toggle_done')
 
     def check_marked_off(self, todo_text):
         pass
