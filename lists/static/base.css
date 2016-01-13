@@ -1,3 +1,7 @@
 #id_new_item {
   margin-top: 2em;
 }
+
+#id_list_table .todo-done {
+  text-decoration: line-through;
+}
