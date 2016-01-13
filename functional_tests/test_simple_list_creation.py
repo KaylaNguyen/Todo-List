@@ -29,7 +29,7 @@ class NewVisitorTest(TodoFunctionalTest):
         # as an item in a to-do list
         edith_list_url = self.browser.current_url
         self.assertRegexpMatches(edith_list_url, '/lists.+')
-        self.check_for_row_in_list_table('1. Buy peacock feathers')
+        self.check_for_row_in_list_table('Buy peacock feathers')
         # self.assertTrue(
         #     any(row.text == '1: Buy peacock feathers' for row in rows),
         #     "New to-do item did not appear -- text was:\n%s" % (table.text),
@@ -40,8 +40,8 @@ class NewVisitorTest(TodoFunctionalTest):
         self.enter_a_new_item('Use peacock feathers to make fly')
 
         # The page updates again, and now shows both items on her list
-        self.check_for_row_in_list_table('1. Buy peacock feathers')
-        self.check_for_row_in_list_table('2. Use peacock feathers to make fly')
+        self.check_for_row_in_list_table('Buy peacock feathers')
+        self.check_for_row_in_list_table('Use peacock feathers to make fly')
 
         # Now a new user, Francis, comes along
         # We use a new browser session to make sure no info of Edith's come along

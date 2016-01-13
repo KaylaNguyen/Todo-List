@@ -2,14 +2,6 @@ from .base import TodoFunctionalTest
 from selenium import webdriver
 
 class ToggleDoneTest(TodoFunctionalTest):
-    def toggle_todo_done(self, todo_text):
-        row = self.find_table_row(todo_text)
-        row.find_elements_by_tag_name('input').click()
-        self.browser.find_element_by_id('toggle_done')
-
-    def check_marked_off(self, todo_text):
-        pass
-
     def test_can_toggle_finished_items(self):
         # Edith makes a quick shopping list.
         # noticing a checkbox to toggle done items
@@ -41,3 +33,11 @@ class ToggleDoneTest(TodoFunctionalTest):
         self.check_marked_off('Buy fishing line')
         self.toggle_todo_done('Tie some flys')
         self.check_marked_off('Tie some flys')
+
+    def toggle_todo_done(self, todo_text):
+        row = self.find_table_row(todo_text)
+        row.find_element_by_tag_name('input').click()
+        self.browser.find_element_by_id('toggle_done')
+
+    def check_marked_off(self, todo_text):
+        pass

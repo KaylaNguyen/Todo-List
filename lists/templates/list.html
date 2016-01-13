@@ -4,12 +4,22 @@
 {% block form_action %}/lists/{{ list.id }}/{% endblock %}
 
 {% block table %}
+  <form id="edit_items"
+    method="POST"
+    action="/lists/{{ list.id }}/items/">
     <table id = "id_list_table" class="table">
         {% for item in list.item_set.all %}
         <tr><td>{{ forloop.counter }}.</td>
-          <td><input type="checkbox"/></td>
+          <td>
+            <input type="checkbox"
+            name="mark_item_done"
+            value="{{ item.id }}" />
+          </td>
           <td>{{ item.text}} </td></tr>
         <!-- <a href = "/lists/{{ list.id }}/{{ item.id }}/delete_item"> Delete</a> -->
         {% endfor %}
       </table>
+      <button id="toggle_done" type="submit">Mark Done</button>
+      {% csrf_token %}
+  </form>
 {% endblock %}

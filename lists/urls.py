@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^(\d+)/(\d+)/delete_item$', views.delete_item, name='delete_item'),
     # \d means only digits
     url(r'^(\d+)/$', views.view_list, name='view_list'),
+    url(r'^(\d+)/items/$', views.edit_list, name="edit_list"),
 ]
 # urlpatterns = [
 #     url(r'^admin/', admin.site.urls),
