@@ -28,13 +28,18 @@ def view_list(request, list_id):
 
     # Method == 'POST'
     if request.method == 'POST':
-        try:
-            item = Item(text=request.POST['item_text'], list=list_)
-            item.full_clean()
-            item.save()
+        if request.POST.has_key('item_text'):
+            try:
+                item = Item(text=request.POST['item_text'], list=list_)
+                item.full_clean()
+                item.save()
 
-        except ValidationError:
-            error = "You can't have an empty list item"
+            except ValidationError:
+                error = "You can't have an empty list item"
+
+        if request.POST.has_key('list_name'):
+            list_.name = request.POST['list_name']
+            list_.save()
 
     # Method == 'GET'
     return render(
