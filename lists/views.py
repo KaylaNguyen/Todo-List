@@ -57,6 +57,10 @@ def delete_item(request, list_id, item_id):
 def edit_list(request, list_id):
     list_ = List.objects.get(id=list_id)
 
+    for item in list_.item_set.all():
+        item.is_done = False
+        item.save()
+
     item_ids = request.POST.getlist('mark_item_done')
     for item_id in item_ids:
         item = Item.objects.get(id=item_id)
