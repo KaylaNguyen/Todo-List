@@ -22,6 +22,17 @@ class HomePageTest(TestCase):
         # self.assertIn(b'<title>To-Do lists</title>', response.content)
         # self.assertTrue(response.content.strip().endswith(b'</html>'))
 
+    def test_home_page_has_todo_list(self):
+        list1 = List.objects.create(name="List 1")
+        list2 = List.objects.create(name="List 1")
+
+        response = self.client.get('/')
+
+        context = response.context['todo_lists']
+        self.assertEqual(len(context), 2)
+        self.assertEqual(context[0], list1)
+        self.assertEqual(context[1], list2)
+
     # def test_home_page_doesnt_save_on_GET_request(self):
     #     request = HttpRequest()
     #     home_page(request)
@@ -216,3 +227,32 @@ class EditListTest(TestCase):
         item2 = Item.objects.get(id=item2.id)
         self.assertFalse(item1.is_done)
         self.assertFalse(item2.is_done)
+
+    def test_POST_item_toggles_done(self):
+        # create list and items
+        current_list = List.objects.create()
+        item1 = Item.objects.create(
+            text="Item 1",
+            list=current_list,
+            is_done=True
+        )
+
+        item2 = Item.objects.create(
+            text="Item 2",
+            list=current_list,
+            is_done=False
+        )
+
+        # POST data
+        response = self.client.post(
+            '/lists/%d/items/' % (current_list.id),
+            data={'mark_item_done': item2.id}
+        )
+        # including toggle item
+        self.assertRedirects(response, '/lists/%d/' % (current_list.id))
+
+        # check the item is updated
+        item1 = Item.objects.get(id=item1.id)
+        item2 = Item.objects.get(id=item2.id)
+        self.assertFalse(item1.is_done)
+        self.assertTrue(item2.is_done)
