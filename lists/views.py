@@ -7,9 +7,10 @@ def home_page(request):
     return render(request, 'home.html', {'todo_lists': List.objects.all()})
 
 def new_list(request):
-    new_list = List.objects.create()
+    item_text = request.POST['item_text']
+    new_list = List.objects.create(name=item_text)
     # list.save() doesn't get validated
-    item = Item(text=request.POST['item_text'], list = new_list)
+    item = Item(text=item_text, list = new_list)
     try:
         item.full_clean()
         item.save()
